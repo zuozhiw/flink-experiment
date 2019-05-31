@@ -44,9 +44,10 @@ public class TpchQ1 {
                 .groupBy("l_returnflag")
                 .select("l_returnflag, sum(l_quantity) as l_quantity_sum").orderBy("l_returnflag");
 
+        DataSet<Row> dataSet = tEnv.toDataSet(plan, Row.class);
+
         long start = System.currentTimeMillis();
 
-        DataSet<Row> dataSet = tEnv.toDataSet(plan, Row.class);
         List<Row> resultRows = dataSet.collect();
 
         System.out.println("result count: " + resultRows.size());
@@ -55,7 +56,6 @@ public class TpchQ1 {
         }
 
         long end = System.currentTimeMillis();
-
 
         System.out.println("time: " + new DecimalFormat("#.##").format(((double) end - start) / 1000) + " seconds");
 
