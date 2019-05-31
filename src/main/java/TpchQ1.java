@@ -7,6 +7,9 @@ import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.types.Row;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 public class TpchQ1 {
 
     public static void run(String[] args) throws Exception {
@@ -15,7 +18,7 @@ public class TpchQ1 {
 
         CsvTableSource lineitemTableSource = CsvTableSource.builder()
 //                .path("/Users/zuozhiw/workspace/expriment/flink-experiment/lineitem.tbl")
-                .path("hdfs://texera-hdfs-2-m:8020/datasets/1G/lineitem.tbl")
+                .path("hdfs://texera-hdfs-2-m:8020/datasets/10G/lineitem.tbl")
                 .fieldDelimiter("|")
                 .field("l_orderkey", Types.INT)
                 .field("l_partkey", Types.INT)
@@ -41,7 +44,22 @@ public class TpchQ1 {
                 .groupBy("l_returnflag")
                 .select("l_returnflag, sum(l_quantity) as l_quantity_sum").orderBy("l_returnflag");
 
-        DataSet<Row> result = tEnv.toDataSet(plan, Row.class);
-        result.print();
+        long start = System.currentTimeMillis();
+
+        DataSet<Row> dataSet = tEnv.toDataSet(plan, Row.class);
+        List<Row> resultRows = dataSet.collect();
+
+        System.out.println("result count: " + resultRows.size());
+        for (Row row: resultRows) {
+            System.out.println(row);
+        }
+
+        long end = System.currentTimeMillis();
+
+
+        System.out.println("time: " + new DecimalFormat("#.##").format(((double) end - start) / 1000) + " seconds");
+
+
+
     }
 }
