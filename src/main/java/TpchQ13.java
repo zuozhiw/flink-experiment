@@ -18,7 +18,7 @@ public class TpchQ13 {
 
         CsvTableSource ordersTableSource = CsvTableSource.builder()
 //                .path("/Users/zuozhiw/workspace/expriment/flink-experiment/orders.tbl")
-                .path("hdfs://texera-hdfs-2-m:8020/datasets/100G/orders.tbl")
+                .path("hdfs://texera-hdfs-2-m:8020/datasets/60G/orders.tbl")
                 .fieldDelimiter("|")
                 .field("o_orderkey", Types.INT)
                 .field("o_custkey", Types.INT)
@@ -33,7 +33,7 @@ public class TpchQ13 {
 
         CsvTableSource customerTableSource = CsvTableSource.builder()
 //                .path("/Users/zuozhiw/workspace/expriment/flink-experiment/customer.tbl")
-                .path("hdfs://texera-hdfs-2-m:8020/datasets/100G/customer.tbl")
+                .path("hdfs://texera-hdfs-2-m:8020/datasets/60G/customer.tbl")
                 .fieldDelimiter("|")
                 .field("c_custkey", Types.INT)
                 .field("c_name", Types.STRING)
