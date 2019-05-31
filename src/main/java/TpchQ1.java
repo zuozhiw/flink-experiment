@@ -18,7 +18,7 @@ public class TpchQ1 {
 
         CsvTableSource lineitemTableSource = CsvTableSource.builder()
 //                .path("/Users/zuozhiw/workspace/expriment/flink-experiment/lineitem.tbl")
-                .path("hdfs://texera-hdfs-2-m:8020/datasets/60G/lineitem.tbl")
+                .path("hdfs://texera-hdfs-2-m:8020/datasets/40G/lineitem.tbl")
                 .fieldDelimiter("|")
                 .field("l_orderkey", Types.INT)
                 .field("l_partkey", Types.INT)
