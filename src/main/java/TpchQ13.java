@@ -7,6 +7,9 @@ import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.types.Row;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 public class TpchQ13 {
 
     public static void run(String[] args) throws Exception {
@@ -49,13 +52,6 @@ public class TpchQ13 {
         Table orders = tEnv.scan("orders");
         Table customer = tEnv.scan("customer");
 
-//        Dataset<Row> plan = orders.join(customer, col("o_custkey").equalTo(col("c_custkey")))
-//                .groupBy(col("o_custkey"))
-//                .agg(count(col("o_orderkey")).as("c_count"))
-//                .groupBy(col("c_count"))
-//                .agg(count("*"))
-//                .sort(col("c_count"));
-
         Table plan = orders.join(customer, "o_custkey = c_custkey")
                 .groupBy("o_custkey")
                 .select("o_custkey, count(o_orderkey) as c_count")
@@ -63,8 +59,20 @@ public class TpchQ13 {
                 .select("c_count, count(o_custkey) as cnt")
                 .orderBy("c_count");
 
+        DataSet<Row> dataSet = tEnv.toDataSet(plan, Row.class);
 
-        DataSet<Row> result = tEnv.toDataSet(plan, Row.class);
-        result.print();
+        long start = System.currentTimeMillis();
+
+        List<Row> resultRows = dataSet.collect();
+
+        System.out.println("result count: " + resultRows.size());
+        for (Row row: resultRows) {
+            System.out.println(row);
+        }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("time: " + new DecimalFormat("#.##").format(((double) end - start) / 1000) + " seconds");
+
     }
 }
