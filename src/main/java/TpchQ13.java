@@ -8,7 +8,8 @@
 //import org.apache.flink.types.Row;
 //
 //public class TpchQ13 {
-//    public static void main(String[] args) throws Exception {
+//
+//    public static void run(String[] args) throws Exception {
 //        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 //        BatchTableEnvironment tEnv = TableEnvironment.getTableEnvironment(env);
 //
